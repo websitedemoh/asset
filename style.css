@@ -794,6 +794,10 @@ button {
   grid-template-columns: minmax(0, 620px);
 }
 
+.contact-address-grid.two-addresses {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .contact-address-card h2 {
   color: #1c1c1c;
   font-size: 18px;
@@ -1520,6 +1524,10 @@ button {
 
   .contact-address-grid,
   .contact-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-address-grid.two-addresses {
     grid-template-columns: 1fr;
   }
 
