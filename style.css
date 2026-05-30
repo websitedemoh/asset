@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --orange: #f47a20;
   --orange-deep: #e45f12;
   --ink: #101010;
@@ -76,8 +76,15 @@ button {
   align-items: center;
   display: flex;
   flex: 0 0 auto;
-  gap: 12px;
   min-width: 315px;
+}
+
+.brand-logo {
+  display: block;
+  height: 72px;
+  max-width: 100%;
+  object-fit: contain;
+  width: auto;
 }
 
 .brand-mark {
@@ -1557,8 +1564,11 @@ button {
   }
 
   .brand {
-    gap: 9px;
     min-width: 0;
+  }
+
+  .brand-logo {
+    height: 54px;
   }
 
   .brand-mark {
