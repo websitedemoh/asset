@@ -2,6 +2,111 @@
 const primaryNav = document.getElementById("primaryNav");
 const dropdownToggles = Array.from(document.querySelectorAll(".dropdown-toggle"));
 
+function initLogoIntro() {
+  const logo = document.querySelector(".brand-logo");
+  const currentPage = window.location.pathname.split("/").pop();
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!logo || (currentPage && currentPage !== "index.html") || prefersReducedMotion) {
+    return;
+  }
+
+  function playIntro() {
+    const target = logo.getBoundingClientRect();
+
+    if (!target.width || !target.height) {
+      return;
+    }
+
+    const overlay = document.createElement("div");
+    const animatedLogo = logo.cloneNode();
+    const introSize = Math.min(window.innerWidth * 0.72, window.innerHeight * 0.72, 720);
+    const startLeft = (window.innerWidth - introSize) / 2;
+    const startTop = (window.innerHeight - introSize) / 2;
+    const introDuration = 3600;
+
+    overlay.className = "logo-intro";
+    overlay.setAttribute("aria-hidden", "true");
+    animatedLogo.className = "logo-intro-image";
+    animatedLogo.removeAttribute("alt");
+    animatedLogo.style.left = `${target.left}px`;
+    animatedLogo.style.top = `${target.top}px`;
+    animatedLogo.style.width = `${target.width}px`;
+    animatedLogo.style.height = `${target.height}px`;
+    overlay.appendChild(animatedLogo);
+
+    document.body.classList.add("logo-intro-active");
+    logo.classList.add("logo-intro-target");
+    document.body.appendChild(overlay);
+
+    const logoAnimation = animatedLogo.animate(
+      [
+        {
+          height: `${introSize * 0.82}px`,
+          left: `${(window.innerWidth - introSize * 0.82) / 2}px`,
+          opacity: 0,
+          top: `${(window.innerHeight - introSize * 0.82) / 2}px`,
+          width: `${introSize * 0.82}px`
+        },
+        {
+          height: `${introSize}px`,
+          left: `${startLeft}px`,
+          opacity: 1,
+          offset: 0.18,
+          top: `${startTop}px`,
+          width: `${introSize}px`
+        },
+        {
+          height: `${introSize}px`,
+          left: `${startLeft}px`,
+          opacity: 1,
+          offset: 0.58,
+          top: `${startTop}px`,
+          width: `${introSize}px`
+        },
+        {
+          height: `${target.height}px`,
+          left: `${target.left}px`,
+          opacity: 1,
+          top: `${target.top}px`,
+          width: `${target.width}px`
+        }
+      ],
+      {
+        duration: introDuration,
+        easing: "cubic-bezier(0.65, 0, 0.25, 1)",
+        fill: "forwards"
+      }
+    );
+
+    overlay.animate(
+      [
+        { opacity: 1, offset: 0.88 },
+        { opacity: 0 }
+      ],
+      {
+        duration: introDuration,
+        easing: "ease-out",
+        fill: "forwards"
+      }
+    );
+
+    logoAnimation.finished
+      .catch(() => {})
+      .finally(() => {
+        logo.classList.remove("logo-intro-target");
+        document.body.classList.remove("logo-intro-active");
+        overlay.remove();
+      });
+  }
+
+  if (logo.complete) {
+    window.requestAnimationFrame(playIntro);
+  } else {
+    logo.addEventListener("load", () => window.requestAnimationFrame(playIntro), { once: true });
+  }
+}
+
 function isMobileNav() {
   return window.innerWidth <= 1080;
 }
@@ -364,6 +469,7 @@ function initAuctionTable() {
   });
 }
 
+initLogoIntro();
 initSlider();
 initNavigation();
 initPromoterTabs();
