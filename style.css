@@ -513,6 +513,18 @@ button {
   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.48fr);
 }
 
+.about-text h2 {
+  color: #000000;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin: 0 0 16px;
+}
+
+.about-text h2:not(:first-child) {
+  margin-top: 34px;
+}
+
 .about-text p {
   color: #111111;
   font-size: 18px;
