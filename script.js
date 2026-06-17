@@ -4,19 +4,26 @@ const dropdownToggles = Array.from(document.querySelectorAll(".dropdown-toggle")
 
 function initLogoIntro() {
   const logo = document.querySelector(".brand-logo");
-  const currentPage = window.location.pathname.split("/").pop();
+  const brand = logo?.closest(".brand");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let isAnimating = false;
 
-  if (!logo || (currentPage && currentPage !== "index.html") || prefersReducedMotion) {
+  if (!logo || !brand || prefersReducedMotion) {
     return;
   }
 
   function playIntro() {
+    if (isAnimating) {
+      return;
+    }
+
     const target = logo.getBoundingClientRect();
 
     if (!target.width || !target.height) {
       return;
     }
+
+    isAnimating = true;
 
     const overlay = document.createElement("div");
     const animatedLogo = logo.cloneNode();
@@ -97,14 +104,14 @@ function initLogoIntro() {
         logo.classList.remove("logo-intro-target");
         document.body.classList.remove("logo-intro-active");
         overlay.remove();
+        isAnimating = false;
       });
   }
 
-  if (logo.complete) {
+  brand.addEventListener("click", (event) => {
+    event.preventDefault();
     window.requestAnimationFrame(playIntro);
-  } else {
-    logo.addEventListener("load", () => window.requestAnimationFrame(playIntro), { once: true });
-  }
+  });
 }
 
 function isMobileNav() {
