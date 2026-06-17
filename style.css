@@ -103,12 +103,13 @@ button {
   display: flex;
   inset: 0;
   justify-content: center;
-  pointer-events: none;
+  pointer-events: auto;
   position: fixed;
   z-index: 10000;
 }
 
 .logo-intro-image {
+  cursor: pointer;
   filter: drop-shadow(0 22px 46px rgba(0, 0, 0, 0.42));
   object-fit: contain;
   position: fixed;
